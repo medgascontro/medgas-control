@@ -1,345 +1,324 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedGas Control</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{
-background:#0b1120;
-color:#fff;
-min-height:100vh;
-}
-header{
-padding:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#111827;
-border-bottom:1px solid #1f2937;
-position:sticky;
-top:0;
-}
-.logo{
-font-size:24px;
-font-weight:bold;
-color:#38bdf8;
-}
-.role{
-background:#1e293b;
-padding:8px 14px;
-border-radius:20px;
-}
-.container{
-padding:20px;
-max-width:1400px;
-margin:auto;
-}
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-margin-bottom:20px;
-}
-.card{
-background:#111827;
-padding:20px;
-border-radius:20px;
-border:1px solid #1f2937;
-}
-.big{
-font-size:28px;
-font-weight:bold;
-margin-top:10px;
-}
-.grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
-}
-.panel{
-background:#111827;
-padding:20px;
-border-radius:20px;
-border:1px solid #1f2937;
-margin-bottom:20px;
-}
-h2{
-margin-bottom:15px;
-color:#38bdf8;
-}
-.job{
-background:#0f172a;
-padding:15px;
-border-radius:15px;
-margin-bottom:15px;
-border:1px solid #1e293b;
-}
-.top{
-display:flex;
-justify-content:space-between;
-gap:10px;
-margin-bottom:10px;
-}
-.status{
-padding:8px 12px;
-border-radius:20px;
-font-weight:bold;
-font-size:13px;
-height:max-content;
-}
-.red{background:#3b0d0d;color:#ff8a8a}
-.yellow{background:#3b320d;color:#ffe066}
-.green{background:#0d3b25;color:#7dffb3}
-.blue{background:#0d263b;color:#7dd3fc}
-ul{
-padding-left:20px;
-margin-top:10px;
-}
-.button{
-display:inline-block;
-background:#38bdf8;
-color:#00111f;
-padding:10px 16px;
-border-radius:12px;
-font-weight:bold;
-margin-top:10px;
-}
-.table{
-width:100%;
-border-collapse:collapse;
-}
-.table th,.table td{
-padding:12px;
-border-bottom:1px solid #1f2937;
-text-align:left;
-}
-.chat{
-background:#0f172a;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-}
-.chat.me{
-background:#12324a;
-}
-@media(max-width:900px){
-.grid{
-grid-template-columns:1fr;
-}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MedGas Control</title>
+  <style>
+    :root{
+      --bg:#071018; --panel:#0d1b26; --panel2:#102434; --text:#eef6ff;
+      --muted:#9fb3c8; --accent:#18d4ff; --red:#ff3b3b; --yellow:#ffc928;
+      --green:#29e36a; --line:#20384c;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at top,#12324a,#071018 60%);color:var(--text)}
+    header{padding:22px 16px;background:#061019;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+    .brand{display:flex;align-items:center;gap:12px;max-width:1200px;margin:auto}
+    .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#18d4ff,#1f7cff);display:flex;align-items:center;justify-content:center;font-weight:900;color:#001018;box-shadow:0 0 25px #18d4ff55}
+    h1{font-size:22px;margin:0}
+    .sub{color:var(--muted);font-size:13px;margin-top:3px}
+    main{max-width:1200px;margin:auto;padding:16px}
+    .login{min-height:70vh;display:flex;align-items:center;justify-content:center}
+    .card{background:linear-gradient(180deg,var(--panel),#08141d);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px #0008}
+    .login .card{width:100%;max-width:430px}
+    input,select,textarea,button{font-family:inherit}
+    input,select,textarea{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:#07131d;color:var(--text);outline:none}
+    textarea{min-height:110px;resize:vertical}
+    label{font-size:13px;color:var(--muted);display:block;margin:12px 0 6px}
+    button{border:0;border-radius:14px;padding:12px 14px;background:linear-gradient(135deg,#18d4ff,#1f7cff);color:#001018;font-weight:800;cursor:pointer}
+    button.secondary{background:#14283a;color:var(--text);border:1px solid var(--line)}
+    button.danger{background:#42191d;color:#ffb5b5;border:1px solid #8a2a32}
+    button.good{background:#133b25;color:#bafbd0;border:1px solid #2e8d55}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+    @media(max-width:850px){.col-3,.col-4,.col-6,.col-8{grid-column:span 12}.brand{align-items:flex-start}}
+    .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .tab{background:#0d2030;color:var(--text);border:1px solid var(--line)}
+    .tab.active{background:linear-gradient(135deg,#18d4ff,#1f7cff);color:#001018}
+    .status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:#07131d;border:1px solid var(--line);font-size:12px}
+    .dot{width:12px;height:12px;border-radius:50%;display:inline-block;box-shadow:0 0 15px currentColor}
+    .red{color:var(--red)}.yellow{color:var(--yellow)}.green{color:var(--green)}
+    table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:16px}
+    th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;font-size:14px;vertical-align:top}
+    th{color:var(--muted);background:#07131d}
+    .list{display:flex;flex-direction:column;gap:10px}
+    .item{padding:13px;border:1px solid var(--line);border-radius:17px;background:#091723}
+    .item h3{margin:0 0 6px;font-size:16px}
+    .small{font-size:12px;color:var(--muted)}
+    .pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#102434;border:1px solid var(--line);font-size:12px;color:var(--muted);margin:2px}
+    .chatbox{height:260px;overflow:auto;background:#07131d;border:1px solid var(--line);border-radius:16px;padding:12px}
+    .msg{margin-bottom:10px;padding:10px;border-radius:14px;background:#102434}
+    .hidden{display:none!important}
+    .photo{max-width:90px;max-height:70px;border-radius:10px;margin:3px;border:1px solid var(--line)}
+    .alert{border:1px solid #644800;background:#271f06;color:#ffe8a3;padding:12px;border-radius:16px;margin-bottom:12px}
+  </style>
 </head>
 <body>
-
 <header>
-<div class="logo">MedGas Control</div>
-<div class="role">Admin</div>
+  <div class="brand">
+    <div class="logo">MG</div>
+    <div>
+      <h1>MedGas Control</h1>
+      <div class="sub">Gestionale cantieri, manutenzioni, bombole, materiali, rapporti e chat interna</div>
+    </div>
+  </div>
 </header>
 
-<div class="container">
+<main>
+  <section id="login" class="login">
+    <div class="card">
+      <h2>Accesso piattaforma</h2>
+      <p class="small">Demo locale. Dati salvati nel browser.</p>
+      <label>Nome utente</label>
+      <input id="loginName" placeholder="es. Marco"/>
+      <label>Ruolo</label>
+      <select id="loginRole">
+        <option value="operaio">Operaio</option>
+        <option value="caposquadra">Caposquadra</option>
+        <option value="magazziniere">Magazziniere</option>
+        <option value="admin">Admin / Datore</option>
+      </select>
+      <button style="width:100%;margin-top:16px" onclick="login()">Entra</button>
+    </div>
+  </section>
 
-<div class="cards">
-<div class="card">
-<div>Lavori da fare</div>
-<div class="big">7</div>
-</div>
+  <section id="app" class="hidden">
+    <div class="topbar">
+      <div>
+        <h2 id="welcome" style="margin:0"></h2>
+        <div class="small">Rosso = da fare · Giallo = in corso · Verde = ultimato</div>
+      </div>
+      <button class="secondary" onclick="logout()">Esci</button>
+    </div>
 
-<div class="card">
-<div>Lavori in corso</div>
-<div class="big">3</div>
-</div>
+    <div id="alerts"></div>
 
-<div class="card">
-<div>Lavori svolti</div>
-<div class="big">18</div>
-</div>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('dashboard',this)">Dashboard</button>
+      <button class="tab" onclick="showTab('lavori',this)">Lavori / Cantieri</button>
+      <button class="tab" onclick="showTab('bombole',this)">Bombole gas</button>
+      <button class="tab" onclick="showTab('magazzino',this)">Magazzino materiali</button>
+      <button class="tab" onclick="showTab('chat',this)">Chat interna</button>
+      <button class="tab" onclick="showTab('archivio',this)">Archivio lavori</button>
+    </div>
 
-<div class="card">
-<div>Bombole in scadenza</div>
-<div class="big">2</div>
-</div>
-</div>
+    <div id="dashboard" class="tabpage">
+      <div class="grid">
+        <div class="card col-3"><h3>Da fare</h3><h2 id="countRed">0</h2></div>
+        <div class="card col-3"><h3>In corso</h3><h2 id="countYellow">0</h2></div>
+        <div class="card col-3"><h3>Ultimati</h3><h2 id="countGreen">0</h2></div>
+        <div class="card col-3"><h3>Bombole in scadenza</h3><h2 id="countExp">0</h2></div>
+        <div class="card col-12">
+          <h3>Panoramica lavori</h3>
+          <div id="dashJobs" class="list"></div>
+        </div>
+      </div>
+    </div>
 
-<div class="grid">
+    <div id="lavori" class="tabpage hidden">
+      <div class="grid">
+        <div class="card col-4" id="adminJobBox">
+          <h3>Crea nuovo lavoro</h3>
+          <label>Titolo lavoro/cantiere</label><input id="jobTitle" placeholder="es. Manutenzione rampa ossigeno"/>
+          <label>Ospedale / luogo</label><input id="jobPlace" placeholder="es. Ospedale Maresca"/>
+          <label>Assegna a squadra/utente</label><input id="jobAssigned" placeholder="es. Squadra 1 - Marco, Fabio"/>
+          <label>Tipo</label><select id="jobType"><option>Cantiere</option><option>Manutenzione</option><option>Urgenza</option></select>
+          <label>Materiale consigliato da portare</label><textarea id="jobSuggested" placeholder="es. 10 m rame 32, 10 curve 10, 3 tee 32, corrugato 32, fisher 8"></textarea>
+          <button onclick="addJob()">Crea e notifica</button>
+        </div>
+        <div class="card col-8">
+          <h3>Lavori assegnati</h3>
+          <div id="jobsList" class="list"></div>
+        </div>
+      </div>
+    </div>
 
-<div>
+    <div id="bombole" class="tabpage hidden">
+      <div class="grid">
+        <div class="card col-4">
+          <h3>Carico bombola</h3>
+          <label>Ospedale</label><input id="cylHospital" placeholder="Maresca / Apicella"/>
+          <label>Gas</label><select id="cylGas"><option>Ossigeno</option><option>Aria medicale</option><option>Anidride carbonica</option><option>Vuoto</option><option>Protossido</option></select>
+          <label>Posizione</label><select id="cylPos"><option>Rampa destra</option><option>Rampa sinistra</option><option>Rampa emergenza</option><option>Magazzino</option></select>
+          <label>Seriale bombola</label><input id="cylSerial" placeholder="Seriale"/>
+          <label>Data scadenza</label><input id="cylDate" type="date"/>
+          <button onclick="addCylinder()">Aggiungi bombola</button>
+        </div>
+        <div class="card col-8">
+          <h3>Bombole registrate</h3>
+          <table><thead><tr><th>Ospedale</th><th>Gas</th><th>Posizione</th><th>Seriale</th><th>Scadenza</th><th>Stato</th><th></th></tr></thead><tbody id="cylTable"></tbody></table>
+        </div>
+      </div>
+    </div>
 
-<div class="panel">
-<h2>Lavori assegnati</h2>
+    <div id="magazzino" class="tabpage hidden">
+      <div class="grid">
+        <div class="card col-4">
+          <h3>Aggiungi materiale</h3>
+          <label>Materiale</label><input id="matName" placeholder="es. Rame rigido 32 / Curve 10 / Fisher 8"/>
+          <label>Quantità</label><input id="matQty" type="number" step="0.5" placeholder="es. 10"/>
+          <label>Unità</label><select id="matUnit"><option>pz</option><option>m</option><option>scatole</option></select>
+          <button onclick="addMaterial()">Aggiungi</button>
+        </div>
+        <div class="card col-8">
+          <h3>Giacenza materiali</h3>
+          <table><thead><tr><th>Materiale</th><th>Quantità</th><th></th></tr></thead><tbody id="matTable"></tbody></table>
+        </div>
+      </div>
+    </div>
 
-<div class="job">
-<div class="top">
-<div>
-<h3>Cardarelli - Terapia Intensiva</h3>
-<p>ED. 8 - Piano 3</p>
-</div>
-<div class="status red">Da fare</div>
-</div>
+    <div id="chat" class="tabpage hidden">
+      <div class="card">
+        <h3>Chat interna squadra</h3>
+        <div id="chatBox" class="chatbox"></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <input id="chatText" placeholder="Scrivi messaggio..."/>
+          <button onclick="sendMsg()">Invia</button>
+        </div>
+      </div>
+    </div>
 
-<p><b>Operatori:</b> Marco, Fabio</p>
-<p><b>Descrizione:</b> Verifica perdita presa ossigeno.</p>
+    <div id="archivio" class="tabpage hidden">
+      <div class="card">
+        <h3>Archivio lavori completi e incompleti</h3>
+        <div id="archiveList" class="list"></div>
+      </div>
+    </div>
+  </section>
+</main>
 
-<ul>
-<li>10 m rame rigido 32</li>
-<li>10 curve 10</li>
-<li>3 tee 32</li>
-<li>corrugato 32</li>
-<li>fisher 8</li>
-</ul>
+<script>
+const DBKEY='medgas_control_v1';
+let user={name:'',role:''};
+let db=load();
 
-<div class="button">Apri lavoro</div>
-</div>
-
-<div class="job">
-<div class="top">
-<div>
-<h3>Maresca - Blocco Operatorio</h3>
-<p>ED. 2 - Piano 1</p>
-</div>
-<div class="status yellow">In corso</div>
-</div>
-
-<p><b>Operatori:</b> Antonio, Luigi</p>
-<p><b>Descrizione:</b> Controllo rampa aria medicale.</p>
-</div>
-
-<div class="job">
-<div class="top">
-<div>
-<h3>Apicella - Magazzino Bombole</h3>
-<p>ED. 1 - Piano Terra</p>
-</div>
-<div class="status green">Svolto</div>
-</div>
-
-<p><b>Rapporto tecnico:</b> salvato in archivio.</p>
-</div>
-
-</div>
-
-<div class="panel">
-<h2>Magazzino e Materiali</h2>
-
-<table class="table">
-<tr>
-<th>Materiale</th>
-<th>Portato</th>
-<th>Usato</th>
-<th>Rientro</th>
-</tr>
-
-<tr>
-<td>Rame 32</td>
-<td>10 m</td>
-<td>7 m</td>
-<td>3 m</td>
-</tr>
-
-<tr>
-<td>Curve 10</td>
-<td>10</td>
-<td>6</td>
-<td>4</td>
-</tr>
-
-<tr>
-<td>Tee 32</td>
-<td>3</td>
-<td>2</td>
-<td>1</td>
-</tr>
-
-</table>
-
-</div>
-
-<div class="panel">
-<h2>Bombole e Scadenze</h2>
-
-<table class="table">
-<tr>
-<th>Gas</th>
-<th>Posizione</th>
-<th>Scadenza</th>
-<th>Stato</th>
-</tr>
-
-<tr>
-<td>Ossigeno</td>
-<td>Rampa destra</td>
-<td>10/05/2026</td>
-<td><span class="status red">Scaduta</span></td>
-</tr>
-
-<tr>
-<td>Aria medicale</td>
-<td>Magazzino</td>
-<td>30/05/2026</td>
-<td><span class="status yellow">In scadenza</span></td>
-</tr>
-
-</table>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="panel">
-<h2>Notifiche</h2>
-
-<div class="chat">
-🔔 Nuovo lavoro assegnato a Squadra Marco.
-</div>
-
-<div class="chat">
-📦 Richiesta materiale inviata al magazzino.
-</div>
-
-<div class="chat">
-⚠️ Bombola ossigeno in scadenza.
-</div>
-
-</div>
-
-<div class="panel">
-<h2>Chat Interna</h2>
-
-<div class="chat">
-<b>Admin:</b><br>
-Marco controlla stanza 12.
-</div>
-
-<div class="chat me">
-<b>Marco:</b><br>
-Ok siamo al piano 3.
-</div>
-
-<div class="chat">
-<b>Magazzino:</b><br>
-Materiale pronto.
-</div>
-
-</div>
-
-<div class="panel">
-<h2>Azioni Rapide</h2>
-
-<div class="button">Nuovo lavoro</div><br>
-<div class="button">Archivio lavori</div><br>
-<div class="button">Gestione bombole</div><br>
-<div class="button">Chat squadre</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+function load(){
+  const saved=localStorage.getItem(DBKEY);
+  if(saved) return JSON.parse(saved);
+  return {
+    jobs:[
+      {id:Date.now(),title:'Controllo rampa ossigeno',place:'Ospedale Maresca',assigned:'Squadra 1',type:'Manutenzione',suggested:'Manometro, chiavi, cercafughe, guarnizioni',status:'red',report:'',operators:'',used:'',photos:[],created:new Date().toLocaleString(),closed:''}
+    ],
+    cylinders:[],
+    materials:[],
+    chat:[{by:'Sistema',text:'Benvenuto in MedGas Control',time:new Date().toLocaleString()}]
+  }
+}
+function save(){localStorage.setItem(DBKEY,JSON.stringify(db));render()}
+function login(){
+  user.name=document.getElementById('loginName').value.trim()||'Operatore';
+  user.role=document.getElementById('loginRole').value;
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('welcome').innerText=`Ciao ${user.name} · Ruolo: ${user.role}`;
+  render();
+}
+function logout(){location.reload()}
+function showTab(id,btn){
+  document.querySelectorAll('.tabpage').forEach(x=>x.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active'); render();
+}
+function badge(status){
+  let c=status==='red'?'red':status==='yellow'?'yellow':'green';
+  let t=status==='red'?'Da fare':status==='yellow'?'In corso':'Ultimato';
+  return `<span class="status"><span class="dot ${c}" style="background:currentColor"></span>${t}</span>`;
+}
+function addJob(){
+  const j={id:Date.now(),title:val('jobTitle'),place:val('jobPlace'),assigned:val('jobAssigned'),type:val('jobType'),suggested:val('jobSuggested'),status:'red',report:'',operators:'',used:'',photos:[],created:new Date().toLocaleString(),closed:''};
+  if(!j.title) return alert('Inserisci titolo lavoro');
+  db.jobs.unshift(j); clearIds(['jobTitle','jobPlace','jobAssigned','jobSuggested']); save();
+}
+function renderJobs(){
+  const html=db.jobs.map(j=>`
+  <div class="item">
+    <h3>${j.title} ${badge(j.status)}</h3>
+    <div class="small">${j.place} · ${j.type} · Assegnato a: ${j.assigned||'-'} · Creato: ${j.created}</div>
+    <div style="margin:8px 0"><span class="pill">Materiale consigliato</span> ${j.suggested||'-'}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="secondary" onclick="setStatus(${j.id},'yellow')">Inizia</button>
+      <button class="good" onclick="completeJob(${j.id})">Lavoro svolto</button>
+      <button class="secondary" onclick="editReport(${j.id})">Rapporto / foto</button>
+      ${user.role==='admin'?`<button class="danger" onclick="delJob(${j.id})">Elimina</button>`:''}
+    </div>
+    <div class="small" style="margin-top:8px"><b>Rapporto:</b> ${j.report||'-'}<br><b>Operatori:</b> ${j.operators||'-'}<br><b>Materiali usati:</b> ${j.used||'-'}<br><b>Chiuso:</b> ${j.closed||'-'}</div>
+    <div>${(j.photos||[]).map(p=>`<img class="photo" src="${p}">`).join('')}</div>
+  </div>`).join('');
+  document.getElementById('jobsList').innerHTML=html||'<p class="small">Nessun lavoro.</p>';
+  document.getElementById('dashJobs').innerHTML=html||'<p class="small">Nessun lavoro.</p>';
+  document.getElementById('archiveList').innerHTML=html||'<p class="small">Archivio vuoto.</p>';
+}
+function setStatus(id,s){db.jobs.find(j=>j.id===id).status=s; save()}
+function completeJob(id){let j=db.jobs.find(x=>x.id===id); j.status='green'; j.closed=new Date().toLocaleString(); save()}
+function delJob(id){if(confirm('Eliminare lavoro?')){db.jobs=db.jobs.filter(j=>j.id!==id);save()}}
+function editReport(id){
+  let j=db.jobs.find(x=>x.id===id);
+  j.operators=prompt('Operatori presenti',j.operators)||j.operators;
+  j.used=prompt('Materiali usati / rientro merce',j.used)||j.used;
+  j.report=prompt('Rapporto tecnico',j.report)||j.report;
+  const addPhoto=confirm('Vuoi aggiungere una foto?');
+  if(addPhoto){
+    const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+    inp.onchange=e=>{
+      const f=e.target.files[0]; if(!f) return;
+      const r=new FileReader(); r.onload=()=>{j.photos.push(r.result); save()}; r.readAsDataURL(f);
+    };
+    inp.click();
+  }
+  save();
+}
+function addCylinder(){
+  const c={id:Date.now(),hospital:val('cylHospital'),gas:val('cylGas'),pos:val('cylPos'),serial:val('cylSerial'),date:val('cylDate')};
+  if(!c.hospital||!c.serial||!c.date) return alert('Compila ospedale, seriale e scadenza');
+  db.cylinders.unshift(c); clearIds(['cylHospital','cylSerial','cylDate']); save();
+}
+function cylState(date){
+  const today=new Date(); const d=new Date(date+'T00:00:00'); const days=Math.ceil((d-today)/(1000*60*60*24));
+  if(days<0) return ['SCADUTA','red'];
+  if(days<=30) return ['In scadenza','yellow'];
+  return ['Ok','green'];
+}
+function renderCyl(){
+  document.getElementById('cylTable').innerHTML=db.cylinders.map(c=>{
+    const [t,col]=cylState(c.date);
+    return `<tr><td>${c.hospital}</td><td>${c.gas}</td><td>${c.pos}</td><td>${c.serial}</td><td>${c.date}</td><td><span class="${col}">${t}</span></td><td><button class="danger" onclick="delCyl(${c.id})">X</button></td></tr>`
+  }).join('');
+}
+function delCyl(id){db.cylinders=db.cylinders.filter(c=>c.id!==id);save()}
+function addMaterial(){
+  const name=val('matName'); const qty=parseFloat(val('matQty')||0); const unit=val('matUnit');
+  if(!name||!qty) return alert('Inserisci materiale e quantità');
+  const ex=db.materials.find(m=>m.name.toLowerCase()===name.toLowerCase()&&m.unit===unit);
+  if(ex) ex.qty+=qty; else db.materials.push({id:Date.now(),name,qty,unit});
+  clearIds(['matName','matQty']); save();
+}
+function renderMat(){
+  document.getElementById('matTable').innerHTML=db.materials.map(m=>`<tr><td>${m.name}</td><td>${m.qty} ${m.unit}</td><td><button class="danger" onclick="delMat(${m.id})">X</button></td></tr>`).join('');
+}
+function delMat(id){db.materials=db.materials.filter(m=>m.id!==id);save()}
+function sendMsg(){
+  const text=val('chatText'); if(!text) return;
+  db.chat.push({by:user.name,text,time:new Date().toLocaleString()}); document.getElementById('chatText').value=''; save();
+}
+function renderChat(){
+  document.getElementById('chatBox').innerHTML=db.chat.map(m=>`<div class="msg"><b>${m.by}</b> <span class="small">${m.time}</span><br>${m.text}</div>`).join('');
+}
+function renderAlerts(){
+  const exp=db.cylinders.filter(c=>cylState(c.date)[0]!=='Ok');
+  document.getElementById('alerts').innerHTML=exp.length?`<div class="alert"><b>Attenzione:</b> ${exp.length} bombole scadute o in scadenza. Controlla la sezione Bombole gas.</div>`:'';
+}
+function renderCounts(){
+  document.getElementById('countRed').innerText=db.jobs.filter(j=>j.status==='red').length;
+  document.getElementById('countYellow').innerText=db.jobs.filter(j=>j.status==='yellow').length;
+  document.getElementById('countGreen').innerText=db.jobs.filter(j=>j.status==='green').length;
+  document.getElementById('countExp').innerText=db.cylinders.filter(c=>cylState(c.date)[0]!=='Ok').length;
+  document.getElementById('adminJobBox').style.display=(user.role==='admin')?'block':'none';
+}
+function render(){renderCounts();renderJobs();renderCyl();renderMat();renderChat();renderAlerts()}
+function val(id){return document.getElementById(id).value.trim()}
+function clearIds(ids){ids.forEach(id=>document.getElementById(id).value='')}
+</script>
 </body>
 </html>
